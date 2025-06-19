@@ -1,10 +1,15 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\models\entities;
 
-use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -65,7 +70,7 @@ class Author extends \yii\db\ActiveRecord
         return $this->hasMany(GuestSubscribe::class, ['id_a' => 'id']);
     }
 
-    public static function getAuthotsList()
+    public static function getAuthotsList() : array
     {
         return ArrayHelper::map(self::find()->orderBy('id')->asArray()->all(), 'id', 'fio');
     }

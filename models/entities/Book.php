@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\models\entities;
@@ -73,13 +79,6 @@ class Book extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-    }
-
-    /**
      * Устанавливаю книге новых авторов
      *
      * @param int[] $newIds
@@ -106,6 +105,8 @@ class Book extends \yii\db\ActiveRecord
                 $bookAuthor = new BookAuthor();
                 $bookAuthor->id_b = $this->id;
                 $bookAuthor->id_a = $idAuthor;
+                // Сохраняю в очередь задачу, что у автора появилась новая книга
+                // Эта задача, выполняясь, в свою очередь, создаст задачи по отправке оповещений подписчикам
                 Yii::$app->queue->push(new \app\services\AuthorNewBookJob([
                     'book_id' => $this->id,
                     'author_id' => $idAuthor

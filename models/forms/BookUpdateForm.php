@@ -1,19 +1,26 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\models\forms;
 
 use app\models\entities\Book;
-use app\models\entities\Author;
-use Yii;
 use app\services\BookImageServiceInterface;
 
 /**
- *
+ * Форма редактирования книги
  */
 class BookUpdateForm extends BookCreateForm
 {
+    /**
+     * @var Book AR модель книги
+     */
     private Book $book;
 
     public function __construct(Book $book, BookImageServiceInterface $imService, $config = [])

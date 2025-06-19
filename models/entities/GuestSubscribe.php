@@ -1,10 +1,14 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\models\entities;
-
-use Yii;
 
 /**
  * This is the model class for table "guest_subscribes".

@@ -19,9 +19,8 @@ class m130524_201442_init extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
-
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'is_admin' => $this->tinyInteger()->notNull()->defaultValue(0)->comment('Отметка, что это админ (может управлять авторами)'),
+            'is_admin' => $this->tinyInteger()->notNull()->defaultValue(0)->comment('Отметка, что это админ (может управлять авторами), 1 - админ, 0 - нет'),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

@@ -1,12 +1,18 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\models\forms;
 
+use Yii;
 use app\models\entities\Book;
 use app\models\entities\Author;
-use Yii;
 use app\services\BookImageServiceInterface;
 
 /**
@@ -14,25 +20,59 @@ use app\services\BookImageServiceInterface;
  */
 class BookCreateForm extends \yii\base\Model
 {
+    /**
+     * Сколько максимально авторов мы показываем на формах создания/удаления книги
+     */
     public const AUTHORS_MAX_AMOUNT = 3;
 
+    /**
+     * @var string Название книги
+     */
     public string $name = '';
 
+    /**
+     * @var string|null Jgbcfybt rybub
+     */
     public ?string $description = '';
 
+    /**
+     * @var string|null ISBN книги.
+     */
     public ?string $isbn = '';
 
+    /**
+     * @var int Год издания
+     */
     public int $year = 0;
 
+    /**
+     * @var Загружаемая картинка
+     */
     public $imageFile;
 
-    public $imagePath = '';
+    /**
+     * @var string Относительный путь к картинке
+     */
+    public string $imagePath = '';
 
+    /**
+     * @var int Пользователь, создавший книгу
+     */
     public int  $id_user;
 
-    public $authors = [];
+    /**
+     * @var array Авторы
+     * Массив типа
+     * ['author1' => 1, 'author2' => 4], который через магический __get позволяем у модели динамически видеть св-ва
+     * $book->author1, $book->author2
+     */
+    public array $authors = [];
 
+    /**
+     * @var BookImageServiceInterface  Сервис управления картинками
+     */
     private BookImageServiceInterface $imgService;
+
 
     public function __construct(BookImageServiceInterface $imgService, $config = [])
     {
@@ -80,7 +120,7 @@ class BookCreateForm extends \yii\base\Model
                 return $this->authors[$name];
             }
         }
-        return parent::__set($name, $value);
+        parent::__set($name, $value);
     }
 
     public function rules()
@@ -94,6 +134,7 @@ class BookCreateForm extends \yii\base\Model
             [['year'], 'match', 'pattern' => '/^\d{4}$/'],
             [['year'], 'number', 'min' => 1900, 'max' => intval(date('Y')) + 1],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            // Нужно будет переопределить в форме редактирования
             'isbn' => [['isbn'], 'unique', 'targetClass' => Book::class],
             [['author1'], 'checkAuthors', 'skipOnEmpty' => false],
         ];
@@ -117,7 +158,6 @@ class BookCreateForm extends \yii\base\Model
                 } else {
                     $existed[$author] = true;
                 }
-
             }
         }
         if (!$hasAuthor) {
@@ -125,14 +165,21 @@ class BookCreateForm extends \yii\base\Model
         }
     }
 
+    /**
+     * Загрузка картинки
+     * @return void
+     */
     public function upload(): void
     {
         if ($this->imageFile) {
             $this->imagePath = $this->imgService->save($this->imageFile);
         }
-
     }
 
+    /**
+     * Id-шки авторов данной книги
+     * @return int[]
+     */
     public function getAuthorIds(): array
     {
         return array_map('intval', array_filter(array_values($this->authors)));

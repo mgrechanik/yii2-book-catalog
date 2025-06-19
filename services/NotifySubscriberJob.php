@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * This file is part of the mgrechanik/yii2-book-catalog project
+ *
+ * @copyright Copyright (c) Mikhail Grechanik <mike.grechanik@gmail.com>
+ * @license https://github.com/mgrechanik/yii2-book-catalog/blob/main/LICENSE.md
+ * @link https://github.com/mgrechanik/yii2-book-catalog
+ */
 declare(strict_types=1);
 
 namespace app\services;
@@ -20,7 +26,7 @@ class NotifySubscriberJob extends \yii\base\BaseObject implements \yii\queue\Job
     public function execute($queue)
     {
         // Просто сохраняю файл, проверяю что работает
-        file_put_contents(\Yii::getAlias('@runtime/queuedata/tel' . $this->phone . ' - ' . $this->author_id . ' - ' . $this->book_id), 'выполнил');
+        // file_put_contents(\Yii::getAlias('@runtime/queuedata/tel' . $this->phone . ' - ' . $this->author_id . ' - ' . $this->book_id), 'выполнил');
 
         // отправляю sms
         if (($author = Author::findOne($this->author_id)) && ($book = Book::findOne($this->book_id))) {
@@ -33,8 +39,6 @@ class NotifySubscriberJob extends \yii\base\BaseObject implements \yii\queue\Job
                 \Yii::warning('Не получилось отправить SMS');
             }
         }
-
-
 
     }
 }
