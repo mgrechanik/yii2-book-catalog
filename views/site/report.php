@@ -29,7 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <?php if ($report) { ?>
+    <?php 
+        if ($report) { 
+    ?>
         <div class="row">
             <div class="col-lg-5">
                 <h2>Список топ авторов:</h2>
@@ -44,22 +46,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tbody>
                     <?php
                         $i = 0;
-        foreach ($report as $row) {
-            $i++;
-            ?>
+                        foreach ($report as $row) {
+                            $i++;
+                    ?>
                         <tr>
                             <td><?= $i ?></td>
                             <td><?= Html::encode($row['fio']) ?></td>
                             <td><?= Html::encode($row['count']) ?></td>
                         </tr>
                     <?php
-        }
-        ?>
+                        }
+                    ?>
 
                     </tbody>
                 </table>
             </div>
         </div>
-    <?php } ?>
+    <?php 
+        } 
+    ?>
 
 </div>
