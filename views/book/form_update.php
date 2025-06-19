@@ -22,19 +22,18 @@ use app\models\entities\Author;
     <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
 
     <?php
-    //var_dump($model);die();
-    if ($model->imagePath) {
-        print Html::img($model->imagePath, ['height' => 150, 'width' => 'auto']);
-    }
-?>
+        if ($model->imagePath) {
+            print Html::img($model->imagePath, ['height' => 150, 'width' => 'auto']);
+        }
+    ?>
 
     <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <?php
-foreach ($model->authors as $key => $val) {
-    print $form->field($model, $key)->dropDownList(['' => ''] + Author::getAuthotsList());
-}
-?>
+        foreach ($model->authors as $key => $val) {
+            print $form->field($model, $key)->dropDownList(['' => ''] + Author::getAuthotsList());
+        }
+    ?>
 
 
     <div class="form-group">

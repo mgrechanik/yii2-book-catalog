@@ -6,7 +6,7 @@ use app\models\entities\Author;
 
 /** @var yii\web\View $this */
 /** @var app\models\forms\BookCreateForm $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var yii\bootstrap5\ActiveForm $form */
 ?>
 
 <div class="book-form">
@@ -24,10 +24,10 @@ use app\models\entities\Author;
     <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <?php
-    foreach ($model->authors as $key => $val) {
-        print $form->field($model, $key)->dropDownList(['' => ''] + Author::getAuthotsList());
-    }
-?>
+        foreach ($model->authors as $key => $val) {
+            print $form->field($model, $key)->dropDownList(['' => ''] + Author::getAuthotsList());
+        }
+    ?>
 
 
     <div class="form-group">
