@@ -37,11 +37,18 @@ $user = Yii::$app->user;
             'description:ntext',
             'year',
             'isbn',
-            'photo',
+            'photo' => [
+                'attribute' => 'photo',
+                'format' => 'html',
+                'label' => 'Обложка',
+                'value' => function ($model) {
+                    return Html::img($model->photo, ['height' => 150, 'width' => 'auto']);
+                },
+            ],
             [
                 'attribute' => 'author',
                 'format' => 'html',
-                'label' => 'Обложка',
+                'label' => 'Авторы',
                 'value' => function ($model) {
                     $authors = $model->authors;
                     $items = [];
@@ -51,9 +58,6 @@ $user = Yii::$app->user;
                     return Html::ul($items);
                 },
             ],
-            //'id_user',
-            //'created_at',
-            //'updated_at',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Book $model, $key, $index, $column) {

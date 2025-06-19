@@ -21,6 +21,6 @@ interface BookImageServiceInterface
 
     public function save(UploadedFile $file): string;
 
-    public function deleteImage($path): void;
+    public function deleteImage(string $path) : void;
 
 }
