@@ -51,18 +51,6 @@ class BookController extends Controller
                 ],
             ],
         ];
-        /*
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );*/
     }
 
     /**
@@ -101,21 +89,14 @@ class BookController extends Controller
      */
     public function actionCreate()
     {
-        //$form = new BookCreateForm();
         $form = Yii::createObject([
             'class' => BookCreateForm::class
         ]);
-        //var_dump($form);
-        //var_dump($form->author7);
-        //var_dump($form->attributes());
-        //die();
-        //var_dump($this->service);die();
         if ($this->request->isPost) {
             if ($form->load($this->request->post()) && $form->validate()) {
                 if ($form->imageFile = UploadedFile::getInstance($form, 'imageFile')) {
                     $form->upload();
                 }
-
                 try {
                     $book = $this->service->create($form);
                     Yii::$app->session->setFlash('success', 'Книга была успешно создана');
@@ -147,7 +128,6 @@ class BookController extends Controller
             throw new \yii\web\ForbiddenHttpException('Доступ на управление запрещён к книгам, созданным не Вами.');
         }
 
-        //$form = new BookUpdateForm($model);
         $form = Yii::createObject([
             'class' => BookUpdateForm::class
         ], [$model]);
@@ -156,7 +136,6 @@ class BookController extends Controller
             if ($form->imageFile = UploadedFile::getInstance($form, 'imageFile')) {
                 $form->upload();
             }
-
             try {
                 $this->service->update($form);
                 Yii::$app->session->setFlash('success', 'Книга была успешно изменена');
@@ -203,7 +182,6 @@ class BookController extends Controller
         if (($model = Book::findOne(['id' => $id])) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
