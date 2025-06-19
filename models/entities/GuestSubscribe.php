@@ -63,7 +63,7 @@ class GuestSubscribe extends \yii\db\ActiveRecord
      */
     public function getAuthor()
     {
-        return $this->hasOne(Authors::class, ['id' => 'id_a']);
+        return $this->hasOne(Author::class, ['id' => 'id_a']);
     }
 
 }
