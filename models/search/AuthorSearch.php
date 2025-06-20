@@ -41,7 +41,7 @@ class AuthorSearch extends Author
      */
     public function search($params, $formName = null)
     {
-        $query = Author::find()->with('authors');
+        $query = Author::find();
 
         // add conditions that should always apply here
 
