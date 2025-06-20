@@ -29,11 +29,21 @@ class NotifySubscriberJob extends \yii\base\BaseObject implements \yii\queue\Job
         // file_put_contents(\Yii::getAlias('@runtime/queuedata/tel' . $this->phone . ' - ' . $this->author_id . ' - ' . $this->book_id), 'выполнил');
 
         // отправляю sms
-        if (($author = Author::findOne($this->author_id)) && ($book = Book::findOne($this->book_id))) {
-            $text = urlencode('У автора ' . $author->fio . ' появилась книга ' . $book->name);
-            $phone = trim($this->phone, '+');
-            $key = \Yii::$app->params['smspilotkey'];
-            $res = file_get_contents('https://smspilot.ru/api.php?send=' . $text . '&to=' . $phone . '&apikey=' . $key . '&format=json');
+        $cache = \Yii::$app->cache;
+        $key = 'notify about book - ' . $this->book_id . ' - ' . $this->author_id;
+        $data = $cache->get($key);
+        if ($data === false) {
+            if (($author = Author::findOne($this->author_id)) && ($book = Book::findOne($this->book_id))) {
+                $data = urlencode('У автора ' . $author->fio . ' появилась книга ' . $book->name);
+            } else {
+                $data = '';
+            }
+            $cache->set($key, $data);
+        }
+
+        if ($data) {
+            $apiKey = \Yii::$app->params['smspilotkey'];
+            $res = file_get_contents('https://smspilot.ru/api.php?send=' . $data . '&to=' . $this->phone . '&apikey=' . $apiKey . '&format=json');
             $res = json_decode($res);
             if (isset($res->error)) {
                 \Yii::warning('Не получилось отправить SMS');

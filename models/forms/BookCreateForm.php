@@ -63,8 +63,11 @@ class BookCreateForm extends \yii\base\Model
     /**
      * @var array Авторы
      * Массив типа
-     * ['author1' => 1, 'author2' => 4], который через магический __get позволяем у модели динамически видеть св-ва
-     * $book->author1, $book->author2
+     * ['author1' => 1, 'author2' => 4, ...], который через магический __get позволяем у модели динамически добавить св-ва
+     * $book->author1,
+     * $book->author2
+     * ...
+     * $book->authorN  , где N - self:: AUTHORS_MAX_AMOUNT
      */
     public array $authors = [];
 
@@ -131,6 +134,7 @@ class BookCreateForm extends \yii\base\Model
             [['description'], 'string'],
             [['name'], 'string', 'max' => 100],
             [['isbn'], 'string', 'max' => 17],
+            [['isbn'], 'match', 'pattern' => '/^(\d){3}-(\d){1}-(\d){3}-(\d){5}-(\d){1}$/'],
             [['year'], 'match', 'pattern' => '/^\d{4}$/'],
             [['year'], 'number', 'min' => 1900, 'max' => intval(date('Y')) + 1],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],

@@ -47,7 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($modelSubscribe, 'phone')->textInput(['maxlength' => 12]) ?>
+        <?= $form->field($modelSubscribe, 'phone')->widget(\yii\widgets\MaskedInput::class, [
+            'mask' => '+7 999-999-9999',
+        ]) ?>
 
         <div class="form-group">
             <?= Html::submitButton('Подписаться на автора', ['class' => 'btn btn-success']) ?>

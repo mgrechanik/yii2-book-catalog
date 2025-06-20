@@ -19,7 +19,10 @@ use app\models\entities\Author;
 
     <?= $form->field($model, 'year')->textInput(['maxlength' => 4]) ?>
 
-    <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'isbn')->widget(\yii\widgets\MaskedInput::class, [
+        'mask' => '999-9-999-99999-9',
+    ]) ?>
+
 
     <?= $form->field($model, 'imageFile')->fileInput() ?>
 

@@ -37,9 +37,12 @@ class GuestSubscribe extends \yii\db\ActiveRecord
         return [
             [['phone'], 'required'],
             [['id_a'], 'integer'],
-            [['phone'], 'string', 'max' => 12],
-            [['phone'], 'match', 'pattern' => '/^\+7(\d){10}$/'],
-            [['phone', 'id_a'], 'unique', 'targetAttribute' => ['phone', 'id_a']],
+            [['phone'], 'string', 'max' => 15],
+            [['phone'], 'match', 'pattern' => '/^\+7 (\d){3}-(\d){3}-(\d){4}$/'],
+            ['phone', 'filter', 'filter' => function ($value) {
+                return strtr($value, ['+' => '', ' ' => '', '-' => '']);
+            }],
+            [['phone', 'id_a'], 'unique', 'targetAttribute' => ['phone', 'id_a'], 'message' => 'Данный телефон уже подписан на этого автора'],
             [['id_a'], 'exist', 'skipOnError' => true, 'targetClass' => Author::class, 'targetAttribute' => ['id_a' => 'id']],
         ];
     }
@@ -51,7 +54,7 @@ class GuestSubscribe extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'phone' => 'Телефон гостя',
+            'phone' => 'Ваш телефон',
             'id_a' => 'Id автора',
         ];
     }
