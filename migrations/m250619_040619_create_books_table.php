@@ -26,6 +26,7 @@ class m250619_040619_create_books_table extends Migration
 
         $this->createIndex('books_year_idx', 'books', 'year');
         $this->createIndex('books_name_idx', 'books', 'name');
+        $this->createIndex('books_isbn_idx', 'books', 'isbn');
 
         $this->addForeignKey('books_id_user_fk', 'books', 'id_user', 'user', 'id' , 'CASCADE', 'CASCADE' );
     }
