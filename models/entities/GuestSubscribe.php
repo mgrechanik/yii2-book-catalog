@@ -15,7 +15,7 @@ namespace app\models\entities;
  *
  * @property int $id
  * @property string $phone Телефон гостя
- * @property int $id_a Id автора
+ * @property int $author_id Id автора
  *
  * @property Author $a
  */
@@ -36,14 +36,14 @@ class GuestSubscribe extends \yii\db\ActiveRecord
     {
         return [
             [['phone'], 'required'],
-            [['id_a'], 'integer'],
+            [['author_id'], 'integer'],
             [['phone'], 'string', 'max' => 15],
             [['phone'], 'match', 'pattern' => '/^\+7 (\d){3}-(\d){3}-(\d){4}$/'],
             ['phone', 'filter', 'filter' => function ($value) {
                 return strtr($value, ['+' => '', ' ' => '', '-' => '']);
             }],
-            [['phone', 'id_a'], 'unique', 'targetAttribute' => ['phone', 'id_a'], 'message' => 'Данный телефон уже подписан на этого автора'],
-            [['id_a'], 'exist', 'skipOnError' => true, 'targetClass' => Author::class, 'targetAttribute' => ['id_a' => 'id']],
+            [['phone', 'author_id'], 'unique', 'targetAttribute' => ['phone', 'author_id'], 'message' => 'Данный телефон уже подписан на этого автора'],
+            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => Author::class, 'targetAttribute' => ['author_id' => 'id']],
         ];
     }
 
@@ -55,7 +55,7 @@ class GuestSubscribe extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'phone' => 'Ваш телефон',
-            'id_a' => 'Id автора',
+            'author_id' => 'Id автора',
         ];
     }
 
@@ -66,7 +66,7 @@ class GuestSubscribe extends \yii\db\ActiveRecord
      */
     public function getAuthor()
     {
-        return $this->hasOne(Author::class, ['id' => 'id_a']);
+        return $this->hasOne(Author::class, ['id' => 'author_id']);
     }
 
 }

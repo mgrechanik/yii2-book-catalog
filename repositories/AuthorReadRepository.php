@@ -26,9 +26,9 @@ class AuthorReadRepository
         $query = new Query();
         $query
             ->select(['a.id', 'b.year','a.fio', 'count' => new Expression('COUNT(*)')])
-            ->from(['ba' => 'bookauthors'])
-            ->leftJoin('authors a', 'ba.id_a = a.id')
-            ->leftJoin('books b', 'ba.id_b = b.id')
+            ->from(['ba' => 'book_authors'])
+            ->leftJoin('authors a', 'ba.author_id = a.id')
+            ->leftJoin('books b', 'ba.book_id = b.id')
             ->where(['b.year' => $year])
             ->groupBy('a.id, b.year, a.fio')
             ->orderBy('count desc')

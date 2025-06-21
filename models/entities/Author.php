@@ -57,7 +57,7 @@ class Author extends \yii\db\ActiveRecord
      */
     public function getBooks(): \yii\db\ActiveQuery
     {
-        return $this->hasMany(Book::class, ['id' => 'id_b'])->viaTable('bookauthors', ['id_a' => 'id']);
+        return $this->hasMany(Book::class, ['id' => 'book_id'])->viaTable('book_authors', ['author_id' => 'id']);
     }
 
     /**
@@ -67,7 +67,7 @@ class Author extends \yii\db\ActiveRecord
      */
     public function getSubscribers(): \yii\db\ActiveQuery
     {
-        return $this->hasMany(GuestSubscribe::class, ['id_a' => 'id']);
+        return $this->hasMany(GuestSubscribe::class, ['author_id' => 'id']);
     }
 
     public static function getAuthotsList() : array

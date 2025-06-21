@@ -58,7 +58,7 @@ class BookCreateForm extends \yii\base\Model
     /**
      * @var int Пользователь, создавший книгу
      */
-    public int  $id_user;
+    public int  $user_id;
 
     /**
      * @var array Авторы
@@ -85,7 +85,7 @@ class BookCreateForm extends \yii\base\Model
 
     public function init()
     {
-        $this->id_user = Yii::$app->user->identity->id;
+        $this->user_id = Yii::$app->user->identity->id;
         $this->year = (int) date("Y");
 
         for ($i = 1; $i <= self::AUTHORS_MAX_AMOUNT; $i++) {

@@ -168,7 +168,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getBooks(): \yii\db\ActiveQuery
     {
-        return $this->hasMany(Book::class, ['id_user' => 'id']);
+        return $this->hasMany(Book::class, ['user_id' => 'id']);
     }
 
     /**

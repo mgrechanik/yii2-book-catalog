@@ -19,7 +19,7 @@ class m250619_040619_create_books_table extends Migration
             'year' => $this->integer()->notNull()->comment('Год издания'),
             'isbn' => $this->string(17)->unique()->comment('ISBN книги, если известен'),
             'photo' => $this->string('100')->comment('Путь к картинке обложки'),
-            'id_user' => $this->integer()->notNull()->comment('id пользователя, добавившего книгу'),
+            'user_id' => $this->integer()->notNull()->comment('id пользователя, добавившего книгу'),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
@@ -28,7 +28,7 @@ class m250619_040619_create_books_table extends Migration
         $this->createIndex('books_name_idx', 'books', 'name');
         $this->createIndex('books_isbn_idx', 'books', 'isbn');
 
-        $this->addForeignKey('books_id_user_fk', 'books', 'id_user', 'user', 'id' , 'CASCADE', 'CASCADE' );
+        $this->addForeignKey('books_user_id_fk', 'books', 'user_id', 'user', 'id' , 'CASCADE', 'CASCADE' );
     }
 
     /**

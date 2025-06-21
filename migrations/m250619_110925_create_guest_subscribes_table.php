@@ -15,12 +15,12 @@ class m250619_110925_create_guest_subscribes_table extends Migration
         $this->createTable('{{%guest_subscribes}}', [
             'id' => $this->primaryKey(),
             'phone' => $this->string('12')->notNull()->comment('Телефон гостя'),
-            'id_a' => $this->integer()->notNull()->comment('Id автора')
+            'author_id' => $this->integer()->notNull()->comment('Id автора')
         ]);
 
-        $this->createIndex('guest_subscribes_phone_id_a_idx', 'guest_subscribes', ['phone', 'id_a'], true);
+        $this->createIndex('guest_subscribes_phone_author_id_idx', 'guest_subscribes', ['phone', 'author_id'], true);
 
-        $this->addForeignKey('guest_subscribes_id_a_fk', 'guest_subscribes', 'id_a', 'authors', 'id' , 'CASCADE', 'CASCADE' );
+        $this->addForeignKey('guest_subscribes_author_id_fk', 'guest_subscribes', 'author_id', 'authors', 'id' , 'CASCADE', 'CASCADE' );
     }
 
     /**

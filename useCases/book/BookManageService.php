@@ -35,7 +35,7 @@ class BookManageService
             $form->description,
             $form->isbn,
             $form->imagePath,
-            $form->id_user,
+            $form->user_id,
             $form->year
         );
         $db = Yii::$app->db;

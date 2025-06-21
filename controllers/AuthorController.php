@@ -73,11 +73,11 @@ class AuthorController extends Controller
     {
         $model = $this->findModel($id);
 
-        $subscribe = new GuestSubscribe(['id_a' => $id, 'phone' => '+7']);
+        $subscribe = new GuestSubscribe(['author_id' => $id, 'phone' => '+7']);
 
         if (Yii::$app->user->isGuest && $this->request->isPost) {
             if ($subscribe->load($this->request->post())) {
-                $subscribe->id_a = $id;
+                $subscribe->author_id = $id;
                 if ($subscribe->save()) {
                     Yii::$app->session->setFlash('success', 'Вы успешно подписаны на автора');
                     return $this->redirect(['view', 'id' => $model->id]);

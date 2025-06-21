@@ -24,7 +24,7 @@ use yii\db\ActiveRecord;
  * @property string|null $isbn ISBN книги, если известен
  * @property int $year Год издания
  * @property string|null $photo Путь к картинке обложки
- * @property int $id_user id пользователя, добавившего книгу
+ * @property int $user_id id пользователя, добавившего книгу
  * @property int $created_at
  * @property int $updated_at
  *
@@ -58,14 +58,14 @@ class Book extends \yii\db\ActiveRecord
         return 'books';
     }
 
-    public static function create($name, $description, $isbn, $photo, $id_user, $year): self
+    public static function create($name, $description, $isbn, $photo, $user_id, $year): self
     {
         $book = new static();
         $book->name = $name;
         $book->description = $description;
         $book->isbn = $isbn;
         $book->photo = $photo;
-        $book->id_user = $id_user;
+        $book->user_id = $user_id;
         $book->year = $year;
         return $book;
     }
@@ -93,18 +93,18 @@ class Book extends \yii\db\ActiveRecord
         $existed = $this->bookauthors;
         $existedIds = [];
         foreach ($existed as $bookAuthor) {
-            if (!in_array($bookAuthor->id_a, $newIds)) {
+            if (!in_array($bookAuthor->author_id, $newIds)) {
                 $bookAuthor->delete();
             }
-            $existedIds[] = $bookAuthor->id_a;
+            $existedIds[] = $bookAuthor->author_id;
         }
 
         // Проверяем на новых
         foreach ($newIds as $idAuthor) {
             if (!in_array($idAuthor, $existedIds)) {
                 $bookAuthor = new BookAuthor();
-                $bookAuthor->id_b = $this->id;
-                $bookAuthor->id_a = $idAuthor;
+                $bookAuthor->book_id = $this->id;
+                $bookAuthor->author_id = $idAuthor;
                 // Сохраняю в очередь задачу, что у автора появилась новая книга
                 // Эта задача, выполняясь, в свою очередь, создаст задачи по отправке оповещений подписчикам
                 Yii::$app->queue->push(new \app\services\AuthorNewBookJob([
@@ -120,12 +120,12 @@ class Book extends \yii\db\ActiveRecord
 
     /**
      * Проверяю что данная книга была создана пользователем с этим id
-     * @param int $id_user
+     * @param int $user_id
      * @return bool
      */
-    public function checkCreatedByUser(int $id_user): bool
+    public function checkCreatedByUser(int $user_id): bool
     {
-        return $this->id_user == $id_user;
+        return $this->user_id == $user_id;
     }
 
     /**
@@ -140,7 +140,7 @@ class Book extends \yii\db\ActiveRecord
             'isbn' => 'ISBN книги',
             'photo' => 'Путь к картинке обложки',
             'year' => 'Год издания',
-            'id_user' => 'id пользователя, добавившего книгу',
+            'user_id' => 'id пользователя, добавившего книгу',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -153,7 +153,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getAuthors(): \yii\db\ActiveQuery
     {
-        return $this->hasMany(Author::class, ['id' => 'id_a'])->viaTable('bookauthors', ['id_b' => 'id']);
+        return $this->hasMany(Author::class, ['id' => 'author_id'])->viaTable('book_authors', ['book_id' => 'id']);
     }
 
     /**
@@ -163,7 +163,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getBookauthors(): \yii\db\ActiveQuery
     {
-        return $this->hasMany(Bookauthor::class, ['id_b' => 'id']);
+        return $this->hasMany(Bookauthor::class, ['book_id' => 'id']);
     }
 
     /**
@@ -173,7 +173,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function getUser(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(User::class, ['id' => 'id_user']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
 }

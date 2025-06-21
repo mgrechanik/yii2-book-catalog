@@ -24,7 +24,7 @@ class AuthorNewBookJob extends \yii\base\BaseObject implements \yii\queue\JobInt
 
     public function execute($queue)
     {
-        $subs = GuestSubscribe::find()->where(['id_a' => $this->author_id])->asArray()->all();
+        $subs = GuestSubscribe::find()->where(['author_id' => $this->author_id])->asArray()->all();
         foreach ($subs as $sub) {
             \Yii::$app->queue->push(new \app\services\NotifySubscriberJob([
                 'phone' => $sub['phone'],
