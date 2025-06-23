@@ -104,6 +104,15 @@ class BookCreateForm extends \yii\base\Model
         return $attrs;
     }
 
+    /**
+     * Магическим методом просто добавляю динамически поля для авторов
+     * $book->author1,
+     * $book->author2
+     * ...
+     * $book->authorN  , где N - self:: AUTHORS_MAX_AMOUNT
+     *
+     * , т.к. в ТЗ не сказано сколько их надо, а так одним движением можно поменять, не вникая в старый код
+     */
     public function __get($name)
     {
         if (str_starts_with($name, 'author')) {

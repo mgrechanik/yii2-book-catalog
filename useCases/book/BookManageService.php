@@ -68,6 +68,9 @@ class BookManageService
         $book->description = $form->description;
         $book->isbn = $form->isbn;
         $book->year = $form->year;
+        if ($form->isNeedToDeleteOldImage()) {
+            $form->imagePath = '';
+        }
         if ($book->photo !== $form->imagePath) {
             $imgService = Yii::createObject(BookImageServiceInterface::class);
             $imgService->deleteImage($book->photo);

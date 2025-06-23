@@ -23,6 +23,12 @@ class BookUpdateForm extends BookCreateForm
      */
     private Book $book;
 
+    /**
+     * @var int Флажок, что нужно удалить картинку, когда не перекрываем новой картинкой
+     * 1 - надо, 0 - нет
+     */
+    public int $needDeleteOldImage = 0;
+
     public function __construct(Book $book, BookImageServiceInterface $imService, $config = [])
     {
         $this->book = $book;
@@ -50,12 +56,23 @@ class BookUpdateForm extends BookCreateForm
     {
         $rules = parent::rules();
         $rules['isbn'] = [['isbn'], 'unique', 'targetClass' => Book::class, 'filter' => ['<>', 'id', $this->book->id]];
+        $rules[] = ['needDeleteOldImage', 'in', 'range' => [0, 1]];
         return $rules;
     }
 
+    /**
+     * @return Book
+     */
     public function getBook()
     {
         return $this->book;
     }
+
+    public function isNeedToDeleteOldImage()
+    {
+        return $this->needDeleteOldImage == 1;
+    }
+
+
 
 }
