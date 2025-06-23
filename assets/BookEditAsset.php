@@ -14,8 +14,6 @@ use yii\web\AssetBundle;
 /**
  * Main page asset bundle.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
  */
 class BookEditAsset extends AssetBundle
 {
